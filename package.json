@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "emscripten-example",
+  "version": "1.0.0",
+  "description": "emscripten example",
+  "main": "index.js",
+  "scripts": {
+    "hello:build": "emcc src/hello.c -o out/hello.js",
+    "hello:run": "node out/hello.js",
+    "hello-func:build": "emcc src/hello-func.c -o out/hello-func.js -s EXPORTED_FUNCTIONS=\"['_hello']\"",
+    "hello-func:run": "node call-hello.js",
+    "hello-wasm-module:build": "emcc src/hello-func.c -o out/hello-module.js -s WASM=1 -Wall -s MODULARIZE=1 -s EXPORTED_FUNCTIONS=\"['_hello']\"",
+    "hello-wasm-module:run": "node call-module.js",
+    "hello-wasm-direct:build": "emcc ./src/count-only-my-code.c -o ./out/count-only-my-code.wasm -Wall -s WASM=1 -s SIDE_MODULE=1 -s ONLY_MY_CODE=1 -s EXPORTED_FUNCTIONS=\"['_add']\"",
+    "hello-wasm-direct:run": "node call-wasm.js"
+  },
+  "keywords": [],
+  "author": "azu",
+  "license": "MIT"
+}
