@@ -195,6 +195,33 @@ func._hello();
 
 ## WASM in Node.js
 
+### .wasm module
+
+` -s MODULARIZE=1`を使うとemscriptenがwasmをラップしたjsを作ってくれて、なんやかんやしてくれる。
+
+```
+emcc src/hello-func.c -o out/hello-module.js -s WASM=1 -Wall -s MODULARIZE=1 -s EXPORTED_FUNCTIONS="['_hello']"
+```
+
+` MODULARIZE=1`を付けたコマンドを実行すると`.js`と`.wasm`が生成される。
+これは一緒に生成された`.js`(emscriptenのラッパー)を読み込んで実行できる。
+
+```js
+// emcc src/hello-func.c -o out/hello-module.js -s WASM=1 -Wall -s MODULARIZE=1 -s EXPORTED_FUNCTIONS="['_hello']" -O3
+// emscripten module code
+const path = require("path");
+// to resolve wasm file
+process.chdir(path.join(__dirname, "out"));
+const Module = require("./out/hello-module");
+Module().then(function(instance) {
+    instance._hello();
+});
+```
+
+直接実行より遥かに簡単。
+
+### .wasm direct
+
 `.wasm`ファイルを作ってNode.jsで実行する
 
 - [Deploying Emscripten Compiled Pages — Emscripten 1.37.22 documentation](https://kripken.github.io/emscripten-site/docs/compiling/Deploying-Pages.html?highlight=wasm "Deploying Emscripten Compiled Pages — Emscripten 1.37.22 documentation")
@@ -307,6 +334,19 @@ DEBUG:root:asm2wasm (asm.js => WebAssembly): bin/asm2wasm ./out/count-only-my-co
 
 でオチていたので、binaryenのパスが通ってなかった。
 
+### ファイルサイズ
+
+```
+✈ ll out
+total 1800
+-rw-r--r--  1 azu  staff   837B 11  5 09:04 count-only-my-code.asm.js
+-rw-r--r--  1 azu  wheel   172K 11  5 08:49 count-only-my-code.js
+-rw-r--r--  1 azu  wheel   280B 11  5 09:04 count-only-my-code.wasm
+-rw-r--r--  1 azu  wheel   283K 11  5 09:21 hello-func.js
+-rw-r--r--  1 azu  wheel   101K 11  5 09:25 hello-module.js
+-rw-r--r--  1 azu  staff    43K 11  5 09:25 hello-module.wasm
+-rw-r--r--  1 azu  wheel   283K 11  5 09:21 hello.js
+```
 
 - [WebAssemblyを試してみた - Calmery.me](http://calmery.hatenablog.com/entry/2017/03/08/222513)
 - [楓 software: wasm に clang を使った場合に C 内で関数呼び出しする場合に出るエラー](http://www.kaede-software.com/2017/02/wasm_clang_c.html)
