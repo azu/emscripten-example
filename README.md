@@ -334,6 +334,8 @@ DEBUG:root:asm2wasm (asm.js => WebAssembly): bin/asm2wasm ./out/count-only-my-co
 
 でオチていたので、binaryenのパスが通ってなかった。
 
+- [WebAssembly/binaryen: Compiler infrastructure and toolchain library for WebAssembly, in C++](https://github.com/WebAssembly/binaryen "WebAssembly/binaryen: Compiler infrastructure and toolchain library for WebAssembly, in C++")
+
 ### ファイルサイズ
 
 ```
