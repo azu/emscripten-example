@@ -220,6 +220,8 @@ Module().then(function(instance) {
 
 直接実行より遥かに簡単。
 
+- [Modular output](https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html?highlight=modularize#modular-output "Modular output")
+
 ### .wasm direct
 
 `.wasm`ファイルを作ってNode.jsで実行する
